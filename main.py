@@ -222,10 +222,10 @@ class MainWindow(QMainWindow):
 
     def load_png(self, path: str):
         try:
-            image = Image.open(path)
-            if image.mode not in ["RGBA", "LA"]:
-                image = image.convert("RGBA")
-            self.src_image = image
+            with Image.open(path) as image:
+                if image.mode not in ["RGBA", "LA"]:
+                    image = image.convert("RGBA")
+                self.src_image = image.copy()
             self.src_path = Path(path)
             self.drop.setText(f"Loaded: {Path(path).name}")
             self.process_preview()
